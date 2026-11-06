@@ -1,0 +1,92 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/managers/game_manager.gd" id="1_game"]
+[ext_resource type="PackedScene" path="res://scenes/game/arena.tscn" id="2_arena"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="3_hud"]
+[ext_resource type="Script" path="res://scripts/managers/grid_manager.gd" id="4_grid"]
+[ext_resource type="Script" path="res://scripts/managers/exploration_manager.gd" id="5_exploration"]
+[ext_resource type="Script" path="res://scripts/managers/fog_of_war_manager.gd" id="6_fog"]
+[ext_resource type="Script" path="res://scripts/managers/flag_manager.gd" id="7_flag"]
+[ext_resource type="Script" path="res://scripts/managers/health_manager.gd" id="8_health"]
+[ext_resource type="Script" path="res://scripts/managers/respawn_manager.gd" id="9_respawn"]
+[ext_resource type="Script" path="res://scripts/managers/score_manager.gd" id="10_score"]
+[ext_resource type="Script" path="res://scripts/managers/audio_manager.gd" id="11_audio"]
+[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="12_player_input"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_game")
+
+[node name="SplitScreen" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="LeftFrame" type="SubViewportContainer" parent="SplitScreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+stretch = true
+
+[node name="LeftViewport" type="SubViewport" parent="SplitScreen/LeftFrame"]
+handle_input_locally = false
+size = Vector2i(640, 720)
+render_target_update_mode = 4
+
+[node name="Arena" parent="SplitScreen/LeftFrame/LeftViewport" instance=ExtResource("2_arena")]
+
+[node name="RightFrame" type="SubViewportContainer" parent="SplitScreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+stretch = true
+
+[node name="RightViewport" type="SubViewport" parent="SplitScreen/RightFrame"]
+handle_input_locally = false
+size = Vector2i(640, 720)
+render_target_update_mode = 4
+
+[node name="Arena" parent="SplitScreen/RightFrame/RightViewport" instance=ExtResource("2_arena")]
+
+[node name="Managers" type="Node" parent="."]
+
+[node name="GridManager" type="Node" parent="Managers"]
+script = ExtResource("4_grid")
+
+[node name="ExplorationManager" type="Node" parent="Managers"]
+script = ExtResource("5_exploration")
+
+[node name="FogOfWarManager" type="Node" parent="Managers"]
+script = ExtResource("6_fog")
+
+[node name="FlagManager" type="Node" parent="Managers"]
+script = ExtResource("7_flag")
+
+[node name="HealthManager" type="Node" parent="Managers"]
+script = ExtResource("8_health")
+
+[node name="RespawnManager" type="Node" parent="Managers"]
+script = ExtResource("9_respawn")
+
+[node name="ScoreManager" type="Node" parent="Managers"]
+script = ExtResource("10_score")
+
+[node name="AudioManager" type="Node" parent="Managers"]
+script = ExtResource("11_audio")
+
+[node name="Player1Input" type="Node" parent="Managers"]
+script = ExtResource("12_player_input")
+player_id = 0
+
+[node name="Player2Input" type="Node" parent="Managers"]
+script = ExtResource("12_player_input")
+player_id = 1
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]
